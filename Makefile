@@ -17,7 +17,7 @@
 # You may override the following vars on the command line to suit
 # your config.
 CXX=clang++
-CXXFLAGS=-O2 -Wall
+CXXFLAGS=-O2 -Wall -g
 
 # You generally should not modify these.
 CXXFLAGS2=-std=c++1y -Isrc -Itmp $(CXXFLAGS)
@@ -31,11 +31,11 @@ clean:
 bin/server: tmp/genfiles src/server.c++
 	@echo "building bin/server"
 	@mkdir -p bin
-	@$(CXX) src/server.c++ tmp/sandstorm/*.capnp.c++ -o bin/server -static $(CXXFLAGS2) `pkg-config gmime-2.6 capnp-rpc --static --cflags --libs`
+	@$(CXX) src/server.c++ tmp/sandstorm/*.capnp.c++ -o bin/server $(CXXFLAGS2) `pkg-config capnp-rpc --cflags --libs`
 bin/client: tmp/genfiles src/client.c++
 	@echo "building bin/client"
 	@mkdir -p bin
-	@$(CXX) src/client.c++ tmp/sandstorm/*.capnp.c++ -o bin/client -static $(CXXFLAGS2) `pkg-config gmime-2.6 capnp-rpc --static --cflags --libs`
+	@$(CXX) src/client.c++ tmp/sandstorm/*.capnp.c++ -o bin/client $(CXXFLAGS2) `pkg-config capnp-rpc --cflags --libs`
 
 tmp/genfiles: /opt/sandstorm/latest/usr/include/sandstorm/*.capnp
 	@echo "generating capnp files..."
